@@ -100,7 +100,7 @@ function App() {
     return durations.longBreakMinutes * 60
   }, [phase, durations])
 
-  const showReset = isRunning || remainingSeconds !== phaseDurationSeconds
+  const showReset = !isRunning && remainingSeconds !== phaseDurationSeconds
 
   useEffect(() => {
     if (showReset) {
@@ -201,11 +201,14 @@ function App() {
               </button>
               {resetMounted && (
                 <button
+
+
+                
                   className={`secondary control-circle control-reset${resetExiting ? ' reset-exiting' : ''}`}
                   onClick={reset}
                   aria-label="Reset timer"
                   title="Reset timer"
-                  aria-hidden={resetExiting}
+                  aria-hidden={resetExiting ? 'true' : 'false'}
                 >
                   <ResetIcon />
                 </button>
