@@ -138,6 +138,34 @@ button.secondary {
   width: 3.35rem;
   height: 3.35rem;
   font-size: 1.35rem;
+  animation: reset-pop-in 350ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.control-reset.reset-exiting {
+  animation: reset-pop-out 350ms cubic-bezier(0.22, 0.06, 0.08, 1) both;
+  pointer-events: none;
+}
+
+@keyframes reset-pop-in {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes reset-pop-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.4);
+    opacity: 0;
+  }
 }
 
 .control-icon {

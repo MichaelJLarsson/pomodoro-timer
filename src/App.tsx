@@ -85,11 +85,41 @@ function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [draftDurations, setDraftDurations] = useState(durations)
   const [panelHeights, setPanelHeights] = useState({ timer: 0, settings: 0 })
+  const [resetMounted, setResetMounted] = useState(false)
+  const [resetExiting, setResetExiting] = useState(false)
   const timerPanelRef = useRef<HTMLElement | null>(null)
   const settingsPanelRef = useRef<HTMLElement | null>(null)
+  const resetExitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const title = useMemo(() => formatTime(remainingSeconds), [remainingSeconds])
   const panelGap = 16
+
+  const phaseDurationSeconds = useMemo(() => {
+    if (phase === 'focus') return durations.focusMinutes * 60
+    if (phase === 'shortBreak') return durations.shortBreakMinutes * 60
+    return durations.longBreakMinutes * 60
+  }, [phase, durations])
+
+  const showReset = isRunning || remainingSeconds !== phaseDurationSeconds
+
+  useEffect(() => {
+    if (showReset) {
+      if (resetExitTimerRef.current) {
+        clearTimeout(resetExitTimerRef.current)
+        resetExitTimerRef.current = null
+      }
+      setResetExiting(false)
+      setResetMounted(true)
+    } else if (resetMounted) {
+      setResetExiting(true)
+      resetExitTimerRef.current = setTimeout(() => {
+        setResetMounted(false)
+        setResetExiting(false)
+        resetExitTimerRef.current = null
+      }, 350)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showReset])
 
   const revealHeight = isSettingsOpen ? panelHeights.settings : panelHeights.timer
   const revealOffset = isSettingsOpen ? -(panelHeights.timer + panelGap) : 0
@@ -127,7 +157,7 @@ function App() {
     window.addEventListener('resize', measurePanels)
 
     return () => window.removeEventListener('resize', measurePanels)
-  }, [isSettingsOpen, draftDurations])
+  }, [isSettingsOpen, draftDurations, resetMounted])
 
   const openSettings = () => {
     setDraftDurations(durations)
@@ -169,14 +199,17 @@ function App() {
               >
                 {isRunning ? <PauseIcon /> : <PlayIcon />}
               </button>
-              <button
-                className="secondary control-circle control-reset"
-                onClick={reset}
-                aria-label="Reset timer"
-                title="Reset timer"
-              >
-                <ResetIcon />
-              </button>
+              {resetMounted && (
+                <button
+                  className={`secondary control-circle control-reset${resetExiting ? ' reset-exiting' : ''}`}
+                  onClick={reset}
+                  aria-label="Reset timer"
+                  title="Reset timer"
+                  aria-hidden={resetExiting}
+                >
+                  <ResetIcon />
+                </button>
+              )}
             </div>
 
             <p className="cycles">Completed focus sessions: {completedFocusSessions}</p>
