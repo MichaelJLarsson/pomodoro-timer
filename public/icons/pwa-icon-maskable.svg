@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Pomodoro Timer maskable icon">
+  <rect width="512" height="512" fill="#234eab"/>
+  <circle cx="256" cy="256" r="170" fill="#2f6fed"/>
+  <circle cx="256" cy="256" r="120" fill="none" stroke="#ffffff" stroke-width="30"/>
+  <circle cx="256" cy="256" r="8" fill="#ffffff"/>
+  <path d="M256 192v72l50 32" fill="none" stroke="#ffffff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
