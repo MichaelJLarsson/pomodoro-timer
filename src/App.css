@@ -51,10 +51,10 @@
   color: var(--muted-text);
 }
 
-.controls-row {
+.controls-stack {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  justify-items: center;
+  gap: 0.65rem;
 }
 
 .cycles {
@@ -118,6 +118,32 @@ button.secondary {
   border-color: var(--card-border);
   background: transparent;
   color: inherit;
+}
+
+.control-circle {
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  padding: 0;
+}
+
+.control-primary {
+  width: 6.25rem;
+  height: 6.25rem;
+  font-size: 2rem;
+}
+
+.control-reset {
+  width: 3.35rem;
+  height: 3.35rem;
+  font-size: 1.35rem;
+}
+
+.control-icon {
+  width: 58%;
+  height: 58%;
+  display: block;
 }
 
 .notification-row {

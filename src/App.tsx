@@ -28,6 +28,44 @@ function formatTime(seconds: number): string {
     .padStart(2, '0')}`
 }
 
+function PlayIcon() {
+  return (
+    <svg className="control-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="currentColor" d="M8 5.14v13.72a1 1 0 001.53.85l10.1-6.86a1 1 0 000-1.7L9.53 4.29A1 1 0 008 5.14z" />
+    </svg>
+  )
+}
+
+function PauseIcon() {
+  return (
+    <svg className="control-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="currentColor" d="M7 5h3a1 1 0 011 1v12a1 1 0 01-1 1H7a1 1 0 01-1-1V6a1 1 0 011-1zm7 0h3a1 1 0 011 1v12a1 1 0 01-1 1h-3a1 1 0 01-1-1V6a1 1 0 011-1z" />
+    </svg>
+  )
+}
+
+type ResetIconVariant = 'refreshArrows' | 'rewindTail'
+
+const RESET_ICON_VARIANT: ResetIconVariant = 'refreshArrows'
+
+function ResetIcon() {
+  const pathData: Record<ResetIconVariant, string> = {
+    refreshArrows:
+      'M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z',
+    rewindTail:
+      'M12 4a8 8 0 00-8 8h2.2a5.8 5.8 0 111.7 4.1L6 18.1A8 8 0 1012 4zm-1.2 2.6L6.8 10l4 3.4V11h3.6V9h-3.6V6.6z',
+  }
+
+  return (
+    <svg className="control-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d={pathData[RESET_ICON_VARIANT]}
+      />
+    </svg>
+  )
+}
+
 function App() {
   const {
     phase,
@@ -122,12 +160,22 @@ function App() {
               <p className="phase-description">{phaseDescriptions[phase]}</p>
             </header>
 
-            <div className="controls-row">
-              <button className="primary" onClick={isRunning ? pause : start}>
-                {isRunning ? 'Pause' : 'Start'}
+            <div className="controls-stack">
+              <button
+                className="primary control-circle control-primary"
+                onClick={isRunning ? pause : start}
+                aria-label={isRunning ? 'Pause timer' : 'Start timer'}
+                title={isRunning ? 'Pause timer' : 'Start timer'}
+              >
+                {isRunning ? <PauseIcon /> : <PlayIcon />}
               </button>
-              <button className="secondary" onClick={reset}>
-                Reset
+              <button
+                className="secondary control-circle control-reset"
+                onClick={reset}
+                aria-label="Reset timer"
+                title="Reset timer"
+              >
+                <ResetIcon />
               </button>
             </div>
 
